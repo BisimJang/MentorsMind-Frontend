@@ -11,8 +11,10 @@ import PieChart from './components/charts/PieChart';
 import AreaChart from './components/charts/AreaChart';
 import MetricCard from './components/charts/MetricCard';
 
+import PricingSettings from './components/mentor/PricingSettings';
+
 function App() {
-  const [view, setView] = useState<'onboarding' | 'learner' | 'reviews' | 'analytics'>('onboarding');
+  const [view, setView] = useState<'onboarding' | 'learner' | 'reviews' | 'analytics' | 'pricing'>('onboarding');
   const [showForm, setShowForm] = useState(false);
   
   const { 
@@ -37,10 +39,10 @@ function App() {
             <div className="w-8 h-8 bg-stellar rounded-lg flex items-center justify-center text-white font-bold">M</div>
             <span className="font-bold text-xl tracking-tight">MentorMinds <span className="text-stellar">Stellar</span></span>
           </div>
-          <div className="flex items-center gap-4 bg-gray-50 p-1 rounded-xl">
+          <div className="flex items-center gap-4 bg-gray-50 p-1 rounded-xl overflow-x-auto">
             <button
               onClick={() => setView('onboarding')}
-              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
+              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${
                 view === 'onboarding' ? 'bg-white shadow-sm text-stellar' : 'text-gray-400 hover:text-gray-600'
               }`}
             >
@@ -48,15 +50,23 @@ function App() {
             </button>
             <button
               onClick={() => setView('learner')}
-              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
+              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${
                 view === 'learner' ? 'bg-white shadow-sm text-stellar' : 'text-gray-400 hover:text-gray-600'
               }`}
             >
               Learner Onboarding
             </button>
             <button
+              onClick={() => setView('pricing')}
+              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${
+                view === 'pricing' ? 'bg-white shadow-sm text-stellar' : 'text-gray-400 hover:text-gray-600'
+              }`}
+            >
+              Pricing Settings
+            </button>
+            <button
               onClick={() => setView('analytics')}
-              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
+              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${
                 view === 'analytics' ? 'bg-white shadow-sm text-stellar' : 'text-gray-400 hover:text-gray-600'
               }`}
             >
@@ -64,7 +74,7 @@ function App() {
             </button>
             <button
               onClick={() => setView('reviews')}
-              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
+              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${
                 view === 'reviews' ? 'bg-white shadow-sm text-stellar' : 'text-gray-400 hover:text-gray-600'
               }`}
             >
@@ -80,6 +90,8 @@ function App() {
           <MentorOnboarding />
         ) : view === 'learner' ? (
           <LearnerOnboarding />
+        ) : view === 'pricing' ? (
+          <PricingSettings />
         ) : view === 'analytics' ? (
           <AnalyticsDashboard />
         ) : (
@@ -220,28 +232,3 @@ function AnalyticsDashboard() {
 }
 
 export default App;
-# Tasks
-
-- [x] Planning Phase
-    - [x] Research existing codebase
-    - [x] Create implementation plan
-- [x] Implement `useMentorDashboard` Hook
-    - [x] Define types for dashboard data
-    - [x] Create mock data and hook logic
-- [x] Create Dashboard Components
-    - [x] `EarningsOverview.tsx` (with charts)
-    - [x] `PerformanceMetrics.tsx`
-    - [x] `UpcomingSessions.tsx` (with actions)
-    - [x] `RecentReviews.tsx`
-    - [x] `ActivityFeed.tsx`
-- [x] Create `MentorDashboard.tsx` Page
-    - [x] Integrate all components
-    - [x] Add responsiveness and premium design elements
-- [/] Integrating Dashboard into App and Cleanup
-    - [/] Update `App.tsx`
-    - [/] Cleanup misplaced files
-- [ ] Testing and Verification
-    - [ ] Dashboard render tests
-    - [ ] Session management tests
-    - [ ] Earnings display tests
-- [ ] Final Walkthrough
