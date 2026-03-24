@@ -5,6 +5,7 @@ import AccessibilityPanel from './components/a11y/AccessibilityPanel';
 import MentorOnboarding from './components/onboarding/MentorOnboarding';
 import LearnerOnboarding from './pages/LearnerOnboarding';
 import MentorWallet from './pages/MentorWallet';
+import LearningGoals from './pages/LearningGoals';
 import RatingBreakdown from './components/reviews/RatingBreakdown';
 import ReviewForm from './components/reviews/ReviewForm';
 import ReviewList from './components/reviews/ReviewList';
@@ -19,7 +20,7 @@ import SearchPage from './pages/SearchPage';
 import PricingSettings from './components/mentor/PricingSettings';
 
 function App() {
-  const [view, setView] = useState<'onboarding' | 'learner' | 'wallet' | 'reviews' | 'analytics'>('onboarding');
+  const [view, setView] = useState<'onboarding' | 'learner' | 'wallet' | 'goals' | 'reviews' | 'analytics'>('onboarding');
   const [showForm, setShowForm] = useState(false);
   const [a11yOpen, setA11yOpen] = useState(false);
   const [announcement, setAnnouncement] = useState('');
@@ -75,6 +76,14 @@ function App() {
               }`}
             >
               Learner Onboarding
+            </button>
+            <button
+              onClick={() => setView('goals')}
+              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
+                view === 'goals' ? 'bg-white shadow-sm text-stellar' : 'text-gray-400 hover:text-gray-600'
+              }`}
+            >
+              Goals
             </button>
             <button
               onClick={() => setView('wallet')}
@@ -163,6 +172,8 @@ function App() {
           <LearnerOnboarding />
         ) : view === 'wallet' ? (
           <MentorWallet />
+        ) : view === 'goals' ? (
+          <LearningGoals />
         ) : view === 'dashboard' ? (
           <MentorDashboard />
         ) : view === 'search' ? (
