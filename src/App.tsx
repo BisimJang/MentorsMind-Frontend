@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import MentorOnboarding from './components/onboarding/MentorOnboarding';
 import LearnerOnboarding from './pages/LearnerOnboarding';
+import MentorDashboard from './pages/MentorDashboard';
+import MentorSearch from './pages/MentorSearch';
 import RatingBreakdown from './components/reviews/RatingBreakdown';
 import ReviewForm from './components/reviews/ReviewForm';
 import ReviewList from './components/reviews/ReviewList';
@@ -12,7 +14,7 @@ import AreaChart from './components/charts/AreaChart';
 import MetricCard from './components/charts/MetricCard';
 
 function App() {
-  const [view, setView] = useState<'onboarding' | 'learner' | 'reviews' | 'analytics'>('onboarding');
+  const [view, setView] = useState<'onboarding' | 'learner' | 'dashboard' | 'search' | 'reviews' | 'analytics'>('onboarding');
   const [showForm, setShowForm] = useState(false);
   
   const { 
@@ -55,6 +57,22 @@ function App() {
               Learner Onboarding
             </button>
             <button
+              onClick={() => setView('dashboard')}
+              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
+                view === 'dashboard' ? 'bg-white shadow-sm text-stellar' : 'text-gray-400 hover:text-gray-600'
+              }`}
+            >
+              Mentor Dashboard
+            </button>
+            <button
+              onClick={() => setView('search')}
+              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
+                view === 'search' ? 'bg-white shadow-sm text-stellar' : 'text-gray-400 hover:text-gray-600'
+              }`}
+            >
+              Find Mentors
+            </button>
+            <button
               onClick={() => setView('analytics')}
               className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
                 view === 'analytics' ? 'bg-white shadow-sm text-stellar' : 'text-gray-400 hover:text-gray-600'
@@ -80,6 +98,10 @@ function App() {
           <MentorOnboarding />
         ) : view === 'learner' ? (
           <LearnerOnboarding />
+        ) : view === 'dashboard' ? (
+          <MentorDashboard />
+        ) : view === 'search' ? (
+          <MentorSearch />
         ) : view === 'analytics' ? (
           <AnalyticsDashboard />
         ) : (
@@ -220,28 +242,3 @@ function AnalyticsDashboard() {
 }
 
 export default App;
-# Tasks
-
-- [x] Planning Phase
-    - [x] Research existing codebase
-    - [x] Create implementation plan
-- [x] Implement `useMentorDashboard` Hook
-    - [x] Define types for dashboard data
-    - [x] Create mock data and hook logic
-- [x] Create Dashboard Components
-    - [x] `EarningsOverview.tsx` (with charts)
-    - [x] `PerformanceMetrics.tsx`
-    - [x] `UpcomingSessions.tsx` (with actions)
-    - [x] `RecentReviews.tsx`
-    - [x] `ActivityFeed.tsx`
-- [x] Create `MentorDashboard.tsx` Page
-    - [x] Integrate all components
-    - [x] Add responsiveness and premium design elements
-- [/] Integrating Dashboard into App and Cleanup
-    - [/] Update `App.tsx`
-    - [/] Cleanup misplaced files
-- [ ] Testing and Verification
-    - [ ] Dashboard render tests
-    - [ ] Session management tests
-    - [ ] Earnings display tests
-- [ ] Final Walkthrough
