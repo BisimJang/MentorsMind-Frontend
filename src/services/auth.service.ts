@@ -8,4 +8,12 @@ export default class AuthService {
       data: { email, password },
     });
   }
+
+  async signup(email: string, password: string) {
+    return request<{ accessToken: string; refreshToken: string }>({
+      method: "POST",
+      url: "/auth/signup",
+      data: { email, password },
+    });
+  }
 }
