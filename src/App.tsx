@@ -1,4 +1,6 @@
 import { lazy, useEffect, useState } from 'react';
+import { NotificationProvider } from './contexts/NotificationContext';
+import { Toaster } from 'react-hot-toast';
 import SkipNavigation from './components/a11y/SkipNavigation';
 import LiveRegion from './components/a11y/LiveRegion';
 import AccessibilityPanel from './components/a11y/AccessibilityPanel';
@@ -165,123 +167,75 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans text-gray-900 pb-20">
-      <SkipNavigation />
-      <LiveRegion message={announcement} />
-      <AccessibilityPanel isOpen={a11yOpen} onClose={() => setA11yOpen(false)} />
+    <NotificationProvider enableToasts={true} enableSounds={false}>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <SkipNavigation />
+        <LiveRegion />
+        <AccessibilityPanel isOpen={a11yOpen} onClose={() => setA11yOpen(false)} />
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: '#363636',
+              color: '#fff',
+            },
+          }}
+        />
 
-      <nav id="main-nav" aria-label="Main navigation" className="sticky top-0 z-50 border-b border-gray-100 bg-white">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-stellar font-bold text-white">
-              M
+        <nav id="main-nav" aria-label="Main navigation" className="sticky top-0 z-50 border-b border-gray-100 bg-white">
+          <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-stellar font-bold text-white">
+                M
+              </div>
+              <span className="text-xl font-bold tracking-tight">
+                MentorMinds <span className="text-stellar">Stellar</span>
+              </span>
             </div>
-            <span className="text-xl font-bold tracking-tight">
-              MentorMinds <span className="text-stellar">Stellar</span>
-            </span>
-              Mentor Onboarding
-            </button>
+            <div className="hidden items-center gap-2 rounded-2xl bg-gray-50 p-1 md:flex">
+              {[
+                { id: 'search', label: 'Search & Booking' },
+                { id: 'learner', label: 'Learner Onboarding' },
+                { id: 'onboarding', label: 'Mentor Onboarding' },
+                { id: 'profile', label: 'Profile Setup' },
+                { id: 'wallet', label: 'Wallet' },
+                { id: 'analytics', label: 'Analytics' },
+                { id: 'reviews', label: 'Reviews' },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => handleViewChange(item.id as AppView, item.label)}
+                  onMouseEnter={() => preloaders[item.id as AppView]?.()}
+                  onFocus={() => preloaders[item.id as AppView]?.()}
+                  className={`rounded-xl px-4 py-2 text-sm font-bold transition-all ${
+                    view === item.id ? 'bg-white text-stellar shadow-sm' : 'text-gray-500 hover:text-gray-800'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+
             <button
-              onClick={() => setView('learner')}
-              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${
-                view === 'learner' ? 'bg-white shadow-sm text-stellar' : 'text-gray-400 hover:text-gray-600'
-              }`}
+              type="button"
+              onClick={() => setA11yOpen(true)}
+              aria-label="Open accessibility settings"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-stellar/20 bg-stellar/10 text-stellar"
             >
-              Learner Onboarding
-            </button>
-            <button
-              onClick={() => setView('goals')}
-              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
-                view === 'goals' ? 'bg-white shadow-sm text-stellar' : 'text-gray-400 hover:text-gray-600'
-              }`}
-            >
-              Goals
-            </button>
-            <button
-              onClick={() => setView('wallet')}
-              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
-                view === 'wallet' ? 'bg-white shadow-sm text-stellar' : 'text-gray-400 hover:text-gray-600'
-              }`}
-            >
-              Wallet
-            </button>
-            <button
-              onClick={() => setView('analytics')}
-              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${
-                view === 'analytics' ? 'bg-white shadow-sm text-stellar' : 'text-gray-400 hover:text-gray-600'
-              }`}
-            >
-              Analytics
-            </button>
-            <button
-              onClick={() => setView('reviews')}
-              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${
-                view === 'reviews' ? 'bg-white shadow-sm text-stellar' : 'text-gray-400 hover:text-gray-600'
-              }`}
-            >
-              Ratings & Reviews
-            </button>
-            <button
-              onClick={() => setView('profile')}
-              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${
-                view === 'profile' ? 'bg-white shadow-sm text-stellar' : 'text-gray-400 hover:text-gray-600'
-              }`}
-            >
-              Profile Setup
-            </button>
-            <button
-              onClick={() => setView('search')}
-              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
-                view === 'search' ? 'bg-white shadow-sm text-stellar' : 'text-gray-400 hover:text-gray-600'
-              }`}
-            >
-              Search & Discovery
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="3" strokeWidth="2" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+                />
+              </svg>
             </button>
           </div>
-
-          <div className="hidden items-center gap-2 rounded-2xl bg-gray-50 p-1 md:flex">
-            {[
-              { id: 'search', label: 'Search & Booking' },
-              { id: 'learner', label: 'Learner Onboarding' },
-              { id: 'onboarding', label: 'Mentor Onboarding' },
-              { id: 'profile', label: 'Profile Setup' },
-              { id: 'wallet', label: 'Wallet' },
-              { id: 'analytics', label: 'Analytics' },
-              { id: 'reviews', label: 'Reviews' },
-            ].map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => handleViewChange(item.id as AppView, item.label)}
-                onMouseEnter={() => preloaders[item.id as AppView]?.()}
-                onFocus={() => preloaders[item.id as AppView]?.()}
-                className={`rounded-xl px-4 py-2 text-sm font-bold transition-all ${
-                  view === item.id ? 'bg-white text-stellar shadow-sm' : 'text-gray-500 hover:text-gray-800'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-
-          <button
-            type="button"
-            onClick={() => setA11yOpen(true)}
-            aria-label="Open accessibility settings"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-stellar/20 bg-stellar/10 text-stellar"
-          >
-            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="3" strokeWidth="2" />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
-              />
-            </svg>
-          </button>
-        </div>
-      </nav>
+        </nav>
 
       {/* Main content area */}
       <main id="main-content" tabIndex={-1} className="max-w-7xl mx-auto px-4 pt-10 outline-none">
@@ -348,7 +302,6 @@ function App() {
               />
             </div>
           </div>
-          </LazyComponent>
         )}
       </main>
 
@@ -372,7 +325,8 @@ function App() {
       <footer className="fixed bottom-0 left-0 right-0 border-t border-gray-100 bg-white/80 py-4 text-center text-[10px] text-gray-400 backdrop-blur-sm">
         Demo Version 1.0 • Built with Vite, React & Tailwind CSS • Powered by Stellar
       </footer>
-    </div>
+      </div>
+    </NotificationProvider>
   );
 }
 
