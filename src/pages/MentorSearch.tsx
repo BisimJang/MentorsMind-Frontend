@@ -8,7 +8,7 @@ import MentorCard from '../components/search/MentorCard';
 import BookingModal from '../components/learner/BookingModal';
 import type { MentorProfile } from '../types';
 
-const MentorSearch: React.FC = () => {
+const MentorSearch: React.FC<{ isOnline?: boolean }> = ({ isOnline = true }) => {
   const {
     mentors,
     totalResults,
@@ -104,9 +104,10 @@ const MentorSearch: React.FC = () => {
             savedMentors={new Set(mentors.filter((mentor) => isSaved(mentor.id)).map((mentor) => mentor.id))}
             onSaveToggle={toggleSaveMentor}
             onViewProfile={handleViewProfile}
-            onBookSession={setSelectedMentor}
+            onBookSession={isOnline ? setSelectedMentor : undefined}
             viewMode={viewMode}
           />
+
 
           {/* Pagination */}
           {totalPages > 1 && (
@@ -163,7 +164,7 @@ const MentorSearch: React.FC = () => {
                     className="w-16 h-16 rounded-xl object-cover border-2 border-white"
                   />
                 ) : (
-                  <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-stellar to-blue-600 flex items-center justify-center text-white font-bold text-xl">
+                  <div className="w-16 h-16 rounded-xl bg-linear-to-br from-stellar to-blue-600 flex items-center justify-center text-white font-bold text-xl">
                     {mentor.name[0]}
                   </div>
                 )}
@@ -193,7 +194,7 @@ const MentorSearch: React.FC = () => {
                 isSaved={isSaved(mentor.id)}
                 onSave={toggleSaveMentor}
                 onViewProfile={handleViewProfile}
-                onBookSession={setSelectedMentor}
+                onBookSession={isOnline ? setSelectedMentor : undefined}
                 viewMode="grid"
               />
             ))}

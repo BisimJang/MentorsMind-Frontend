@@ -5,6 +5,7 @@ import SkillAssessment from '../components/onboarding/SkillAssessment';
 import MentorMatching from '../components/onboarding/MentorMatching';
 import PlatformTutorial from '../components/onboarding/PlatformTutorial';
 import type { LearnerStepId } from '../types';
+import { useTimezone } from '../hooks/useTimezone';
 
 const LEARNING_GOALS = [
   { id: 'web3', label: 'Learn Web3 & Blockchain', icon: '⛓️' },
@@ -14,6 +15,7 @@ const LEARNING_GOALS = [
   { id: 'career', label: 'Career Transition', icon: '🚀' },
   { id: 'startup', label: 'Launch a Startup', icon: '💡' },
 ];
+
 
 // ProgressIndicator expects OnboardingStepId — we cast since it only uses the array for display
 const STEP_LABELS: Record<LearnerStepId, string> = {
@@ -26,6 +28,8 @@ const STEP_LABELS: Record<LearnerStepId, string> = {
 };
 
 const LearnerOnboarding: React.FC = () => {
+
+  const { timezone } = useTimezone();
   const {
     currentStep,
     completedSteps,
@@ -66,7 +70,7 @@ const LearnerOnboarding: React.FC = () => {
     return (
       <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-gradient-to-r from-stellar to-stellar-light rounded-3xl p-8 text-white shadow-xl">
+          <div className="bg-linear-to-r from-stellar to-stellar-light rounded-3xl p-8 text-white shadow-xl">
             <h1 className="text-3xl font-bold mb-2">Welcome, Learner!</h1>
             <p className="opacity-90">Finish your setup to get matched with the perfect mentor.</p>
           </div>
@@ -258,6 +262,7 @@ const LearnerChecklist: React.FC<{ completedSteps: LearnerStepId[]; onResume: ()
         </div>
         <button onClick={onResume} className="text-xs font-bold text-stellar hover:underline">Resume</button>
       </div>
+      
       <div className="space-y-3">
         {CHECKLIST_ITEMS.map(item => {
           const isDone = completedSteps.includes(item.id);
@@ -274,6 +279,7 @@ const LearnerChecklist: React.FC<{ completedSteps: LearnerStepId[]; onResume: ()
           );
         })}
       </div>
+      
     </div>
   );
 };
